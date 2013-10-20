@@ -1,0 +1,10 @@
+def remove_lines(str, n)
+  res = ""
+  arr = str.split("\n")[n..(str.size-n)]
+  arr.each { |i| res.concat(i + "\n")  }
+  return res
+end
+
+a = "1\n2\n3\n4\n"
+b = remove_lines(a, 2)
+print b
