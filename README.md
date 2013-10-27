@@ -23,12 +23,13 @@ This app will take my tweets, guff it into a [MongoDB](http://www.mongodb.org/) 
 ```
 git clone git remote add origin https://github.com/swmcc/quantum.git
 [get your twitter archive and] mv ~/wheverever/data data
+cd quantum
+bundle install
 ruby read_tweets.rb
 ```
 
 ## Todo
 
-  - Put the tweets into MongoDB
   - Install highcharts, d3
   - Use a framework to aid the RESTFUL API (sinatra, rails?)
   - Add tests

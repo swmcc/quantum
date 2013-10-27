@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 
+require 'date'
 require 'JSON'
+require 'mongo'
+require 'time'
+require 'yaml'
 
 # Remove the first and last line from each json file
 def remove_lines(str, n)
@@ -10,19 +14,20 @@ def remove_lines(str, n)
    return res
 end
 
-def parse_tweet(tweet)
+# Connect to the db and create a collection
+db = Mongo::Connection.new.db("quantum")
+tweets_collection = db.collection("tweets")
 
-end
-
+# Read all the files from the data archive
 files = Dir.glob(File.join('data/js/tweets', "*.js"))
 
+# Every file should contain JSON 
 files.each do |filename|
 	puts "Processing " + filename
-  	
 	tweets = JSON.parse(remove_lines(open(filename).read, 1))
 
 	tweets.each do |tweet|
-		parse_tweet(tweet)
+		tweets_collection.insert(tweet)
 	end
 end
 
