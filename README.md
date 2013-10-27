@@ -25,13 +25,14 @@ git clone git remote add origin https://github.com/swmcc/quantum.git
 [get your twitter archive and] mv ~/wheverever/data data
 cd quantum
 bundle install
-ruby read_tweets.rb
+ruby scripts/read_tweets.rb
+ruby app.rb
 ```
 
 ## Todo
 
   - Install highcharts, d3
-  - Use a framework to aid the RESTFUL API (sinatra, rails?)
+  - Add to the API 
   - Add tests
 
 ## Notes
