@@ -27,7 +27,7 @@ def get_most_mentioned(tweets):
 
 def go_fish():
     tweets = load_archive()
-    most_mentoined_users = get_most_mentioned(tweets)
+    most_mentioned_users = get_most_mentioned(tweets)
 
 
 if __name__ == "__main__":
