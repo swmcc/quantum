@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import json, glob 
+import collections, json, glob 
+from collections import Counter
 from pprint import pprint
 
 def load_archive():
@@ -16,9 +17,18 @@ def load_archive():
                 tweets.append(tweet)
     return sorted(tweets, key=lambda k: k['id'])
 
+def get_most_mentioned(tweets):
+    users = []
+    for tweet in tweets:
+        for user in tweet['entities']['user_mentions']:
+            users.append(user['screen_name'])
+    return collections.Counter(users).most_common(10)
+
+
 def go_fish():
     tweets = load_archive()
-    pprint(tweets)
+    most_mentoined_users = get_most_mentioned(tweets)
+
 
 if __name__ == "__main__":
     go_fish()
