@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 
-import json
+import json, glob 
 from pprint import pprint
 
-with open('test.json') as json_data:
-    d = json.load(json_data)
-    json_data.close()
-    pprint(d)
+for file in glob.glob('data/js/tweets/*.js'):
+    with open(file) as data:
+        # skip that annoying first line
+        raw_data = data.readlines()[1:]
+        raw_data = "".join(raw_data)
+        raw_json = json.loads(raw_data)
+        data.close()
+        pprint(raw_json)
 
