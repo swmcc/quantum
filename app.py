@@ -16,23 +16,25 @@ def load_archive():
             data.close()
             for tweet in raw_json:
                 tweets.append(tweet)
+
     return sorted(tweets, key=lambda k: k['id'])
 
-# Most mentioned users I tweet about 
-def get_most_mentioned(tweets):
-    users = {} 
-    for tweet in tweets:
-        for user in tweet['entities']['user_mentions']:
-            users.append(user['screen_name'])
-    return collections.Counter(users).most_common(10)
+## helper functions to get the hashtags mentioned for a given tweet
+def hashtags_mentioned(tweet):
+    return [ h['text'] for h in tweet['entities']['hashtags'] ]
 
-# Most hashtags I use
-def get_most_hashtags(tweets):
-    hashtags = []
+## helper function to get the users mentioned for a given tweet
+def users_mentioned(tweet):
+    return [ u['screen_name'] for u in tweet['entities']['user_mentions'] ]
+ 
+def get_most_common(tweets, func, n):
+    counter = collections.Counter()
+
     for tweet in tweets:
-        for hashtag in tweet['entities']['hashtags']:
-            hashtags.append(hashtag['text'])
-    return collections.Counter(hashtags).most_common(10)
+        for value in func(tweet):
+            counter.update({ value: 1 })
+
+    return counter.most_common(n)
 
 # Output the results to a json file for consumption later
 def output_json(data):
@@ -41,12 +43,11 @@ def output_json(data):
 
 def go_fish():
     tweets = load_archive()
-    json = {
-      'most_mentioned_users': get_most_mentioned(tweets), 
-      'most_mentioned_hashtags': get_most_hashtags(tweets) 
-    }
 
-    output_json(json)
+    output_json({
+        'most_mentioned_users': get_most_common(tweets, users_mentioned, 10), 
+        'most_mentioned_hashtags': get_most_common(tweets, hashtags_mentioned, 10), 
+    })
 
 if __name__ == "__main__":
     go_fish()
