@@ -32,7 +32,7 @@ etc.
 git clone git remote add origin https://github.com/swmcc/quantum.git
 [get your twitter archive and] mv ~/xxxx/data data
 cd quantum
-python app.py
+./start_development # if you have tmux installed
 ```
 
 ## Todo
