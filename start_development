@@ -1,0 +1,38 @@
+#!/bin/sh
+
+BASE=`pwd`
+PROJECT='quantum'
+
+tmux start-server
+ 
+# new-session creates first window named 'shell'
+tmux new-session -d -s $PROJECT -n shell 
+ 
+# create a second window for 'preview'
+tmux new-window -t $PROJECT:2 -n preview
+ 
+# start a vim editor in the left-most vertical pane
+tmux send-keys -t $PROJECT:shell.2 "cd $BASE;" C-m
+ 
+# widen the vim editor pane by 20 cells
+tmux resize-pane -L -t $PROJECT:shell.2 20
+ 
+# run guard -c clears shell after each change
+tmux send-keys -t $PROJECT:shell.0 "cd $BASE;" C-m
+ 
+# start rails server
+tmux send-keys -t $PROJECT:shell.1 "cd $BASE;" C-m
+ 
+# start logging
+tmux send-keys -t $PROJECT:preview "cd $BASE;" C-m
+ 
+# select the vim pane in the rails window
+tmux select-window -t $PROJECT:shell
+tmux select-pane -t $PROJECT:shell.2
+
+# new-session creates a third window named 'dev'
+tmux new-window -t $PROJECT:3 -n dev 
+tmux send-keys -t $PROJECT:dev.0 "cd $BASE; vim app.py" C-m
+ 
+# make the tmux session active
+tmux attach-session -d -t $PROJECT
